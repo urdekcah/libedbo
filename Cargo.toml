@@ -1,7 +1,18 @@
 [package]
 name = "libedbo"
+authors = ["urdekcah <ya@urdekcah.ru>"]
 version = "0.1.0"
 edition = "2021"
+license = "MIT OR Apache-2.0"
+readme = "README.md"
+description = "Rust client library for accessing the EDBO OpenAPI"
+keywords = ["edbo", "api", "client", "rust"]
+categories = ["api-clients", "education"]
+homepage = "https://github.com/urdekcah/libedbo/"
+repository = "https://github.com/urdekcah/libedbo/"
+
+[badges]
+maintenance = { status = "actively-developed" }
 
 [dependencies]
 tokio = { version = "1", features = ["full"] }
