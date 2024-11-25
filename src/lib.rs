@@ -1,3 +1,51 @@
+//! # libedbo
+//! 
+//! `libedbo` is a Rust client library for accessing the EDBO (Реєстр суб'єктів освітньої діяльності) 
+//! Registry API, which provides information about educational institutions in Ukraine.
+//!
+//! ## Features
+//!
+//! - Search universities and retrieve detailed information
+//! - Search secondary education institutions (schools)
+//! - Support for both async and blocking operations
+//! - Type-safe API with proper error handling
+//! - Coverage for all regions of Ukraine
+//!
+//! ## Quick Start
+//!
+//! ```rust
+//! use libedbo::{SearchParams, Region, UniversityCategory};
+//!
+//! // Create search parameters for universities in Kyiv
+//! let params = SearchParams::new()
+//!     .with_region(Region::KyivCity)
+//!     .with_university_category(UniversityCategory::HigherEducationInstitutions);
+//!
+//! // Search universities (blocking)
+//! let universities = libedbo::search_universities(params)?;
+//!
+//! // Print university names
+//! for uni in universities {
+//!     println!("{}: {}", uni.university_id, uni.university_name);
+//! }
+//! ```
+//!
+//! ## Async Usage
+//!
+//! ```rust
+//! use libedbo::{SearchParams, Region, UniversityCategory};
+//!
+//! #[tokio::main]
+//! async fn main() -> Result<(), Box<dyn std::error::Error>> {
+//!     let params = SearchParams::new()
+//!         .with_region(Region::KyivCity)
+//!         .with_university_category(UniversityCategory::HigherEducationInstitutions);
+//!
+//!     let universities = libedbo::search_universities_async(params).await?;
+//!     Ok(())
+//! }
+//! ```
+//!
 use reqwest::{blocking, Client};
 use serde::de::DeserializeOwned;
 
