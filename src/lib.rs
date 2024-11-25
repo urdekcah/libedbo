@@ -11,6 +11,7 @@ use error::Error;
 const BASE_URL: &str = "https://registry.edbo.gov.ua";
 const UNIVERSITIES_ENDPOINT: &str = "/api/universities";
 const UNIVERSITY_ENDPOINT: &str = "/api/university";
+const INSTITUTIONS_ENDPOINT: &str = "/api/institutions";
 
 fn assert_some<T>(option: Option<T>, field: &str) -> Result<T, Error> {
   option.ok_or_else(|| Error::OtherError(format!("{} cannot be None", field)))
@@ -63,5 +64,19 @@ pub fn search_university(param: SearchParams) -> Result<University, Error> {
     return Err(Error::OtherError("University ID must be positive".to_string()));
   }
   let url = format!("{BASE_URL}{UNIVERSITY_ENDPOINT}?id={id}&exp=json");
+  make_request_blocking(url)
+}
+
+pub async fn search_institutions_async(param: SearchParams) -> Result<Vec<Institution>, Error> {
+  let ut = assert_some(param.institution_category, "institution_category")?;
+  let lc = assert_some(param.region, "region")?;
+  let url = format!("{BASE_URL}{INSTITUTIONS_ENDPOINT}?ut={ut}&lc={lc}&exp=json");
+  make_request(url).await
+}
+
+pub fn search_institutions(param: SearchParams) -> Result<Vec<Institution>, Error> {
+  let ut = assert_some(param.institution_category, "institution_category")?;
+  let lc = assert_some(param.region, "region")?;
+  let url = format!("{BASE_URL}{INSTITUTIONS_ENDPOINT}?ut={ut}&lc={lc}&exp=json");
   make_request_blocking(url)
 }
